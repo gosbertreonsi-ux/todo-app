@@ -20,6 +20,22 @@ function renderTasks(){
             toggleComplete(index);
         });
 
+        const editBtn  = document.createElement("button");
+        editBtn.textContent = "Edit";
+
+        editBtn.addEventListener("click",(e)=>{
+            e.stopPropagation();
+
+            const newtext  = prompt("Edit task:",task.text);
+
+            if(newtext !== null && newtext.trim() !==""){
+                tasks[index].text = newtext;
+                saveTasks();
+                renderTasks();
+            }
+        });
+
+
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent="Delete";
 
@@ -28,6 +44,7 @@ function renderTasks(){
             deleteTask(index);
         });
 
+        li.appendChild(editBtn);
         li.appendChild(deleteBtn);
         list.appendChild(li);
 
@@ -64,5 +81,11 @@ function toggleComplete(index){
 function saveTasks(){
     localStorage.setItem("tasks",JSON.stringify(tasks));
 }
+
+input.addEventListener("keypress",(e)=>{
+    if(e.key==="Enter"){
+        button.click();
+    }
+});
 
 renderTasks();
