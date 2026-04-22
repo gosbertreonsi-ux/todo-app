@@ -11,15 +11,8 @@ app.get("/",(req,res)=>{
     res.send("Server is running");
 });
 
-app.get("/tasks",(req,res)=>{
-    db.query("SELECT*FROM tasks",(err,result)=>{
-        if(err){
-            return res.status(500).send(err);
-        };
-        res.json(result);
-    });
-});
 
+//CREATE TASKS
 app.post("/tasks",(req,res)=>{
     const {text} = req.body;
 
@@ -34,6 +27,48 @@ app.post("/tasks",(req,res)=>{
         });
     });
 });
+
+
+//READ TASKS
+app.get("/tasks",(req,res)=>{
+    db.query("SELECT*FROM tasks",(err,result)=>{
+        if(err){
+            return res.status(500).send(err);
+        };
+        res.json(result);
+    });
+});
+
+
+//UPDATE TASKS
+app.put("/tasks/:id",(req,res)=>{
+    const id = req.params.id;
+    const{completed} = req.body;
+
+    const sql = "UPDATE tasks SET completed =? WHERE id = ?";
+
+    db.query(sql,[completed,id],(err,result)=>{
+        if(err) return res.status(500).send(err);
+
+        res.json({message:"Task updated successifully"});
+    });
+});
+
+
+//DELETE TASKS
+app.delete("/tasks/:id",(req,res)=>{
+    const id = req.params.id;
+
+    const sql = "DELETE FROM tasks WHERE id = ?";
+
+    db.query(sql,[id],(err,result)=>{
+        if(err) return res.status(500).send(err);
+
+        res.json({message:"Task deleted successifully"});
+    });
+});
+
+
 
 app.listen(3000,()=>{
     console.log("Server running on http://localhost:3000");
