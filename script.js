@@ -69,7 +69,7 @@ button.addEventListener("click",()=>{
 function deleteTask(index){
     tasks.splice(index,1);
     renderTasks();
-    savaTasks();
+    saveTasks();
 }
 
 function toggleComplete(index){
