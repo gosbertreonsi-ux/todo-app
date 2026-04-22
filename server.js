@@ -20,6 +20,21 @@ app.get("/tasks",(req,res)=>{
     });
 });
 
+app.post("/tasks",(req,res)=>{
+    const {text} = req.body;
+
+    const sql = "INSERT INTO tasks (text,completed) VALUES(?,false)";
+
+    db.query(sql,[text],(err,result)=>{
+        if(err) return res.status(500).send(err);
+        res.json({
+            id:result.insertId,
+            text:text,
+            completed:false
+        });
+    });
+});
+
 app.listen(3000,()=>{
     console.log("Server running on http://localhost:3000");
 });
